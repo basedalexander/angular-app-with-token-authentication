@@ -8,7 +8,7 @@
  * Controller of the authicationAngularApp
  */
 angular.module('authicationAngularApp')
-  .controller('RegisterCtrl', function ($scope, $http) {
+  .controller('RegisterCtrl', function ($scope, $rootScope, $http, alert) {
     $scope.submit = function () {
 
 
@@ -17,10 +17,10 @@ angular.module('authicationAngularApp')
 
       $http.post(url, user)
         .success(function (res) {
-          console.log('success');
+          alert('success', 'OK!', 'You are now registered');
         })
         .error(function (err) {
-          console.log('error');
+          alert('warning', 'Opps', 'Could not register');
         });
     }
   });

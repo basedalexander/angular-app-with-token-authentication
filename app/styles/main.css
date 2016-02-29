@@ -82,10 +82,20 @@ body {
   }
 }
 
-
-/* LOGIN SCREEN */
-
-
 .help-block {
   color: red;
 }
+
+/* ALERT */
+
+.main-alert {
+  max-width: 400px;
+  margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.alert-hidden {
+  visibility: hidden;
+}
+
+
