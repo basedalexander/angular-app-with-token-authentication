@@ -1,13 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name authicationAngularApp
- * @description
- * # authicationAngularApp
- *
- * Main module of the application.
- */
+// TODO Stopped on video n25
+
 angular
   .module('authicationAngularApp', ['ui.router'])
   .config(function ($urlRouterProvider, $stateProvider) {
@@ -22,5 +16,5 @@ angular
         url: '/register',
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
-      })
+      });
   });

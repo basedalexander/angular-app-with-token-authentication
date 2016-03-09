@@ -10,11 +10,10 @@
 angular.module('authicationAngularApp')
   .controller('RegisterCtrl', function ($scope, $rootScope, $http, alert) {
     $scope.submit = function () {
-
-
       var url = 'http://localhost:3000/register';
       var user = {
-        name: 'Alex'
+        email: $scope.email,
+        password: $scope.password
       };
 
       $http.post(url, user)
@@ -24,5 +23,5 @@ angular.module('authicationAngularApp')
         .error(function (err) {
           alert('warning', 'Opps', 'Could not register');
         });
-    }
+    };
   });

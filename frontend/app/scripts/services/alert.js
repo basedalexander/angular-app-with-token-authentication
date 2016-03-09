@@ -24,5 +24,5 @@ angular.module('authicationAngularApp')
       alertTimeout = $timeout(function () {
         $rootScope.alert.show = false;
       }, timeout || 2000);
-    }
+    };
   });
