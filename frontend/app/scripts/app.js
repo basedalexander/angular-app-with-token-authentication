@@ -4,7 +4,7 @@
 
 angular
   .module('authicationAngularApp', ['ui.router', 'ngAnimate'])
-  .config(function ($urlRouterProvider, $stateProvider) {
+  .config(function ($urlRouterProvider, $stateProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -29,4 +29,8 @@ angular
         url: '/logout',
         controller: 'LogoutCtrl'
       });
-  });
+
+    $httpProvider.interceptors.push('authInterceptor');
+  })
+
+  .constant('API_URL', 'http://localhost:3000/');

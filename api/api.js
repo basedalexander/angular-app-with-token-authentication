@@ -15,6 +15,8 @@ app.use(function (req, res, next) {
   next();
 });
 
+
+
 app.post('/register', function (req, res) {
   var user = req.body;
   console.log(req.body);
@@ -24,9 +26,10 @@ app.post('/register', function (req, res) {
     password: user.password
   });
 
+
   var payload = {
     iss: req.hostname,
-    sub: user._id
+    sub: newUser.id
   };
 
   var token = jwt.encode(payload, 'shhh...');
@@ -39,6 +42,9 @@ app.post('/register', function (req, res) {
   });
 });
 
+
+
+
 var jobs = [
   'front-end developer',
   'back-end developer',
@@ -46,6 +52,17 @@ var jobs = [
 ];
 
 app.get('/jobs', function (req, res) {
+  if (!req.headers.authorization) {
+    return res.status(401).send({ message: 'You are not authorized'});
+  }
+
+  var token = req.headers.authorization.split(' ')[1];
+  var payload = jwt.decode(token, 'shhh...');
+
+  if (!payload.sub) {
+    res.status(401).send({ message: 'Authentication failed'});
+  }
+
   res.json(jobs);
 });
 
