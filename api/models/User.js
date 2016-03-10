@@ -21,6 +21,8 @@ UserSchema.pre('save', function (next) {
     return next();
   }
 
+  console.log('password modified!');
+
   bcrypt.genSalt(10, function (err , salt) {
     if (err) {
       return next(err);

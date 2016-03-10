@@ -21,8 +21,7 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="header">
+    <div ng-controller='HeaderCtrl' class="header">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -41,7 +40,7 @@
 
             <ul class="nav navbar-nav">
               <li ui-sref-active="active"><a ui-sref="main">Home</a></li>
-              <li ui-sref-active="active"><a ui-sref="register">Register</a></li>
+              <li ng-if='!isAuthenticated' ui-sref-active="active"><a ui-sref="register">Register</a></li>
             </ul>
           </div>
         </div>
@@ -90,6 +89,8 @@
         <script src="scripts/directives/validateEquals.js"></script>
         <script src="scripts/controllers/register.js"></script>
         <script src="scripts/services/alert.js"></script>
+        <script src="scripts/services/authToken.js"></script>
+        <script src="scripts/controllers/header.js"></script>
         <!-- endbuild -->
 </body>
 </html>
