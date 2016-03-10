@@ -3,7 +3,7 @@
 // TODO Stopped on video n25
 
 angular
-  .module('authicationAngularApp', ['ui.router'])
+  .module('authicationAngularApp', ['ui.router', 'ngAnimate'])
   .config(function ($urlRouterProvider, $stateProvider) {
     $urlRouterProvider.otherwise('/');
 
@@ -12,9 +12,21 @@ angular
         url: '/',
         templateUrl: 'views/main.html'
       })
+
       .state('register', {
         url: '/register',
         templateUrl: 'views/register.html',
         controller: 'RegisterCtrl'
+      })
+
+      .state('jobs', {
+        url: '/jobs',
+        templateUrl: 'views/jobs.html',
+        controller: 'JobsCtrl'
+      })
+
+      .state('logout', {
+        url: '/logout',
+        controller: 'LogoutCtrl'
       });
   });

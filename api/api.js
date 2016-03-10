@@ -39,6 +39,16 @@ app.post('/register', function (req, res) {
   });
 });
 
+var jobs = [
+  'front-end developer',
+  'back-end developer',
+  'senior c++ developer'
+];
+
+app.get('/jobs', function (req, res) {
+  res.json(jobs);
+});
+
 mongoose.connect('mongodb://localhost/psjwt');
 
 var server = app.listen(3000, function () {
