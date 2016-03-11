@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./models/User.js');
-var jwt = require('./services/jwt.js');
+var jwt = require('jwt-simple');
 
 var app = express();
 app.use(bodyParser.json());
@@ -21,29 +21,61 @@ app.post('/register', function (req, res) {
   var user = req.body;
   console.log(req.body);
 
-  var newUser = new User.model({
+  var newUser = new User({
     email: user.email,
     password: user.password
   });
 
 
-  var payload = {
-    iss: req.hostname,
-    sub: newUser.id
-  };
-
-  var token = jwt.encode(payload, 'shhh...');
-
   newUser.save(function (err) {
-    res.status(200).send({
-      user: newUser.toJSON(),
-      token: token
-    });
+    createSendToken(newUser, res);
   });
 });
 
 
+app.post('/login', function (req, res) {
+  var reqUser = req.body;
 
+  var searchUser = { email: req.body.email};
+
+  User.findOne(searchUser, function (err, user) {
+    if (err) {
+      throw err;
+    }
+
+    if (!user) {
+      return res.status(401).send({message: "Wrong email or password"});
+    }
+
+    console.log('user found : ', user);
+
+    user.comparePasswords(reqUser.password, function (err, isMatch) {
+      if (err) {
+        throw err;
+      }
+
+      if (!isMatch) {
+        return res.status(401).send({message: "Wrong email or password"});
+      }
+
+      createSendToken(user, res);
+    });
+  });
+});
+
+function createSendToken (user, res) {
+  var payload = {
+    sub: user.id
+  };
+
+  var token = jwt.encode(payload, 'shhh...');
+
+  res.status(200).send({
+    user: user.toJSON(),
+    token: token
+  });
+
+}
 
 var jobs = [
   'front-end developer',

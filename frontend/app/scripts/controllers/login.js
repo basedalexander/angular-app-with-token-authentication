@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('authicationAngularApp')
-  .controller('RegisterCtrl', function ($scope, alert, auth) {
+  .controller('LoginCtrl', function ($scope, alert, auth) {
     $scope.submit = function () {
-      auth.register($scope.email, $scope.password)
+
+
+      auth.login($scope.email, $scope.password)
         .success(function (res) {
-          alert('success', 'Account created', 'Welcome, ' + res.user.email + '!');
+          alert('success', 'Welcome', 'Thanks for coming back ' + res.user.email + '!');
         })
         .error(function (err) {
           alert('warning', 'Something went wrong :(', err.message);
         });
-    }
+    };
   });

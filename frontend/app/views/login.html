@@ -1,0 +1,43 @@
+<form ng-submit='submit()' name='register' class="form-horizontal" novalidate>
+
+  <!-- EMAIL -->
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Name or email</label>
+    <div class="col-sm-10">
+      <input
+        name='email'
+        ng-model='email'
+        type="email"
+        required
+        class="form-control"
+        placeholder="">
+      <p
+        ng-show='register.email.$dirty && register.email.$invalid'
+        class='help-block'>Please enter a proper email</p>
+    </div>
+  </div>
+
+  <!-- PASSWORD -->
+  <div class="form-group">
+    <label  class="col-sm-2 control-label">Password</label>
+    <div class="col-sm-10">
+      <input
+        name='password'
+        ng-model='password'
+        required
+        class='form-control'
+        type="password"
+        placeholder="Password"/>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button ng-disabled='register.$invalid' type="submit" class="btn btn-default">Login</button>
+      <!-- <button class="btn btn-default">Register</button> -->
+      <br/>
+      <a class='text-muted pull-right' ui-sref="register">Create account</a>
+    </div>
+  </div>
+</form>
