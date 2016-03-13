@@ -12,4 +12,8 @@ angular.module('authicationAngularApp')
           alert('warning', 'Something went wrong :(', err.message);
         });
     };
+
+    $scope.google = function () {
+      auth.googleAuth().success(function () {});
+    }
   });

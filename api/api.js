@@ -6,6 +6,7 @@ var User = require('./models/User.js');
 var jwt = require('jwt-simple');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy ;
+var request = require('request');
 
 var app = express();
 
@@ -183,6 +184,26 @@ app.post('/jobs', function (req, res) {
       return res.status(401).send('User not found');
     }
     res.json(user.jobs);
+  });
+});
+
+app.post('/auth/google', function (req, res) {
+
+  var url = 'https://www.googleapis.com/oauth2/v4/token';
+
+  var params = {
+    client_id: req.body.clientId,
+    redirect_uri: req.body.redirectUri,
+    code: req.body.code,
+    grant_type: 'authorization_code',
+    client_secret: 'NHNQGIsKH0ir7mDqi-vUD7gQ'
+  };
+
+  request.post(url, {
+    json: true,
+    form: params
+  }, function (err, response, token) {
+    console.log(token);
   });
 });
 

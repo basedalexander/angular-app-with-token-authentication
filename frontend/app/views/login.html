@@ -34,8 +34,10 @@
   <!-- BUTTONS -->
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button ng-disabled='register.$invalid' type="submit" class="btn btn-default">Login</button>
+      <button ng-disabled='register.$invalid' type="submit" class="btn btn-primary">Login</button>
       <!-- <button class="btn btn-default">Register</button> -->
+      <br/> <br/>
+      <button ng-click='google()' type="button" class="btn btn-default">Google+</button>
       <br/>
       <a class='text-muted pull-right' ui-sref="register">Create account</a>
     </div>
