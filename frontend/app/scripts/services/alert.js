@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name authicationAngularApp.alert
- * @description
- * # alert
- * Service in the authicationAngularApp.
- */
 angular.module('authicationAngularApp')
   .service('alert', function ($rootScope, $timeout) {
     var alertTimeout;

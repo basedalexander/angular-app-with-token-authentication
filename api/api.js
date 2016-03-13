@@ -78,7 +78,8 @@ var registerStrategy = new LocalStrategy(stratergyOptions, function (email, pass
 
     var newUser = new User({
       email: email,
-      password: password
+      password: password,
+      jobs: []
     });
 
     newUser.save(function (err) {
@@ -114,13 +115,8 @@ function createSendToken (user, res) {
 }
 
 
-var jobs = [
-  'front-end developer',
-  'back-end developer',
-  'senior c++ developer'
-];
-
 app.get('/jobs', function (req, res) {
+  var jobs;
   if (!req.headers.authorization) {
     return res.status(401).send({ message: 'You are not authorized'});
   }
@@ -132,7 +128,62 @@ app.get('/jobs', function (req, res) {
     res.status(401).send({ message: 'Authentication failed'});
   }
 
-  res.json(jobs);
+  User.findOne({"_id": payload.sub}, function (err, user) {
+    if (err) {
+      return res.status(401).send(err);
+    }
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
+    res.json(user.jobs);
+  });
+
+});
+
+
+
+app.put('/jobs', function (req, res) {
+  if (!req.headers.authorization) {
+    return res.status(401).send({ message: 'You are not authorized'});
+  }
+  var token = req.headers.authorization.split(' ')[1];
+  var payload = jwt.decode(token, 'shhh...');
+
+  if (!payload.sub) {
+    return res.status(401).send({ message: 'Authentication failed'});
+  }
+
+  User.findByIdAndUpdate(payload.sub, { $pull : { jobs: req.body }}, {new: true}, function (err, user) {
+    if (err) {
+      return res.status(401).send(err);
+    }
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
+    res.json(user.jobs);
+  });
+});
+
+app.post('/jobs', function (req, res) {
+  if (!req.headers.authorization) {
+    return res.status(401).send({ message: 'You are not authorized'});
+  }
+  var token = req.headers.authorization.split(' ')[1];
+  var payload = jwt.decode(token, 'shhh...');
+
+  if (!payload.sub) {
+    return res.status(401).send({ message: 'Authentication failed'});
+  }
+
+  User.findByIdAndUpdate(payload.sub, { $addToSet : { jobs: req.body }}, {new: true}, function (err, user) {
+    if (err) {
+      return res.status(401).send(err);
+    }
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
+    res.json(user.jobs);
+  });
 });
 
 mongoose.connect('mongodb://localhost/psjwt');

@@ -139,3 +139,20 @@ body {
   opacity: 0;
 }
 
+
+/* JOBS */
+
+.job {
+  border: 1px solid #b3b3b3;
+  padding: 3px 20px;
+  margin: 0 0 10px 0;
+  position: relative;
+}
+
+.remove-job_btn {
+  position: absolute;
+  right: 10px;
+  top: 3px;
+  cursor: pointer;
+}
+
