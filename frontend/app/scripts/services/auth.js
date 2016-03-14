@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('authicationAngularApp')
-  .service('auth', function ($http, API_URL, authToken, $state, $window) {
+  .service('auth', function ($http, API_URL, authToken, $state, $window, $q) {
 
     function authSuccessful (res) {
       authToken.setToken(res.token);
@@ -34,6 +34,8 @@ angular.module('authicationAngularApp')
       var options = 'width=500, height=500, left=' + ($window.outerWidth - 500)/2
       + ', to=' + ($window.outerHeight - 500)/2;
 
+      var deferred = $q.defer();
+
       var popup = $window.open(url, '', options);
       $window.focus();
 
@@ -47,9 +49,14 @@ angular.module('authicationAngularApp')
             clientId: client_id,
             redirectUri : $window.location.origin
           })
-
+            .success(function (jwt) {
+              authSuccessful(jwt);
+              deferred.resolve(jwt);
+            });
         }
       });
+
+      return deferred.promise;
     }
 
   });

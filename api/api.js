@@ -141,8 +141,6 @@ app.get('/jobs', function (req, res) {
 
 });
 
-
-
 app.put('/jobs', function (req, res) {
   if (!req.headers.authorization) {
     return res.status(401).send({ message: 'You are not authorized'});
@@ -187,23 +185,51 @@ app.post('/jobs', function (req, res) {
   });
 });
 
+
 app.post('/auth/google', function (req, res) {
 
   var url = 'https://www.googleapis.com/oauth2/v4/token';
+  var apiUrl = 'https://www.googleapis.com/plus/v1/people/me/openIdConnect';
 
   var params = {
-    client_id: req.body.clientId,
-    redirect_uri: req.body.redirectUri,
     code: req.body.code,
-    grant_type: 'authorization_code',
-    client_secret: 'NHNQGIsKH0ir7mDqi-vUD7gQ'
+    client_id: req.body.clientId,
+    client_secret: 'NHNQGIsKH0ir7mDqi-vUD7gQ',
+    redirect_uri: req.body.redirectUri,
+    grant_type: 'authorization_code'
   };
 
   request.post(url, {
     json: true,
     form: params
   }, function (err, response, token) {
-    console.log(token);
+    var accessToken = token.access_token;
+    var headers = {
+      Authorization: 'Bearer ' + accessToken
+    };
+
+    request.get({
+      url: apiUrl,
+      headers: headers,
+      json: true
+    }, function (err, response, profile) {
+      User.findOne({ googleId: profile.sub}, function (err, foundUser) {
+        if (foundUser) {
+          return createSendToken(foundUser, res);
+        }
+
+        var newUser = new User();
+        newUser.googleId = profile.sub;
+        newUser.displayName = profile.name;
+        newUser.save(function (err) {
+          if (err) {
+            return next(err);
+          }
+
+          createSendToken(newUser, res);
+        })
+      });
+    });
   });
 });
 
