@@ -39,22 +39,25 @@ angular.module('authicationAngularApp')
       var popup = $window.open(url, '', options);
       $window.focus();
 
-      $window.addEventListener('message', function (event) {
+      $window.addEventListener('message', listener);
+
+      function listener (event) {
         if (event.origin === $window.location.origin) {
           var code = event.data;
           popup.close();
+          $window.removeEventListener('message', listener);
 
           $http.post(API_URL + 'auth/google', {
             code: code,
             clientId: client_id,
-            redirectUri : $window.location.origin
+            redirectUrl: $window.location.origin
           })
             .success(function (jwt) {
               authSuccessful(jwt);
               deferred.resolve(jwt);
             });
         }
-      });
+      }
 
       return deferred.promise;
     };
@@ -82,22 +85,25 @@ angular.module('authicationAngularApp')
       var popup = $window.open(url, '', options);
       $window.focus();
 
-      $window.addEventListener('message', function (event) {
+      $window.addEventListener('message', listener);
+
+      function listener (event) {
         if (event.origin === $window.location.origin) {
           var code = event.data;
           popup.close();
+          $window.removeEventListener('message', listener);
 
           $http.post(API_URL + 'auth/vk', {
             code: code,
             clientId: client_id,
             redirectUrl: $window.location.origin
           })
-          .success(function (jwt) {
-            authSuccessful(jwt);
-            deferred.resolve(jwt);
-          });
+            .success(function (jwt) {
+              authSuccessful(jwt);
+              deferred.resolve(jwt);
+            });
         }
-      });
+      }
 
       return deferred.promise;
     }

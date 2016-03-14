@@ -1,104 +1,22 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var headers = require('./middlewares/headers.js');
 var mongoose = require('mongoose');
 var User = require('./models/User.js');
-//var jwt = require('./services/jwt.js');
-var jwt = require('jwt-simple');
+var jwt = require('jwt-simple'); // ('./services/jwt.js');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy ;
+var strategies = require('./strategies/strategies.js');
 var request = require('request');
 
 var app = express();
 
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use(headers);
 
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
-});
-
-
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  next();
-});
-
-var stratergyOptions = {
-  usernameField: 'email'
-};
-
-var loginStrategy = new LocalStrategy(stratergyOptions, function (email, password, done) {
-
-      var searchUser = { email: email};
-
-      User.findOne(searchUser, function (err, user) {
-        if (err) {
-          return done(err);
-        }
-
-        if (!user) {
-          return done(null, false, {
-           message: 'Wrong email/password'
-          });
-        }
-
-        user.comparePasswords(password, function (err, isMatch) {
-          if (err) {
-            return done(err);
-          }
-
-          if (!isMatch) {
-            return done(null, false, {
-              message: 'Wrong email/password'
-            });
-          }
-
-          return done(null, user);
-        });
-      });
-});
-
-var registerStrategy = new LocalStrategy(stratergyOptions, function (email, password, done) {
-
-  var searchUser = { email: email};
-
-  User.findOne(searchUser, function (err, user) {
-    if (err) {
-      return done(err);
-    }
-
-    if (user) {
-      return done(null, false, {
-        message: 'email already exists'
-      });
-    }
-
-    var newUser = new User({
-      email: email,
-      password: password,
-      jobs: []
-    });
-
-    newUser.save(function (err) {
-      done(null, newUser);
-    });
-  });
-});
-
-passport.use('local-register', registerStrategy);
-passport.use('local-login', loginStrategy);
-
-
-app.post('/register', passport.authenticate('local-register'), function (req, res) {
-  createSendToken(req.user, res);
-});
-
-app.post('/login', passport.authenticate('local-login'), function (req, res) {
-    createSendToken(req.user, res);
 });
 
 function createSendToken (user, res) {
@@ -112,8 +30,20 @@ function createSendToken (user, res) {
     user: user.toJSON(),
     token: token
   });
-
 }
+
+
+passport.use('local-register', strategies.registerStrategy);
+passport.use('local-login', strategies.loginStrategy);
+
+
+app.post('/register', passport.authenticate('local-register'), function (req, res) {
+  createSendToken(req.user, res);
+});
+
+app.post('/login', passport.authenticate('local-login'), function (req, res) {
+    createSendToken(req.user, res);
+});
 
 
 app.get('/jobs', function (req, res) {
@@ -184,7 +114,6 @@ app.post('/jobs', function (req, res) {
     res.json(user.jobs);
   });
 });
-
 
 app.post('/auth/google', function (req, res) {
 
