@@ -57,6 +57,48 @@ angular.module('authicationAngularApp')
       });
 
       return deferred.promise;
-    }
+    };
 
+    this.vkAuth = function () {
+      var urlBuilder = [];
+      var client_id = '5352704';
+      var scope = 4194304 + 4;
+      var v = '5.50';
+
+      urlBuilder.push(
+        'client_id=' + client_id,
+        'scope=' + scope,
+        'redirect_uri=' + $window.location.origin,
+        'response_type=code',
+        'scope=profile email',
+        'v=' + v);
+
+      var url = 'https://oauth.vk.com/authorize?' + urlBuilder.join('&');
+      var options = 'width=800, height=500, left=' + ($window.outerWidth - 800)/2
+        + ', to=' + ($window.outerHeight - 500)/2;
+
+      var deferred = $q.defer();
+
+      var popup = $window.open(url, '', options);
+      $window.focus();
+
+      $window.addEventListener('message', function (event) {
+        if (event.origin === $window.location.origin) {
+          var code = event.data;
+          popup.close();
+
+          $http.post(API_URL + 'auth/vk', {
+            code: code,
+            clientId: client_id,
+            redirectUrl: $window.location.origin
+          })
+          .success(function (jwt) {
+            authSuccessful(jwt);
+            deferred.resolve(jwt);
+          });
+        }
+      });
+
+      return deferred.promise;
+    }
   });

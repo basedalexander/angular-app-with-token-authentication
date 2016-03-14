@@ -5,20 +5,23 @@ angular.module('authicationAngularApp')
     $scope.submit = function () {
 
       auth.login($scope.email, $scope.password)
-        .success(function (res) {
-          alert('success', 'Welcome', 'Thanks for coming back ' + res.user.email + '!');
-        })
+        .success(greetUser)
         .error(handleError);
     };
 
     $scope.google = function () {
-      auth.googleAuth()
-        .then(function (res) {
-          alert('success', 'Welcome', 'Thanks for coming back ' + res.user.displayName + '!');
-        }, handleError);
+      auth.googleAuth().then(greetUser, handleError);
+    };
+
+    $scope.vk = function () {
+      auth.vkAuth().then(greetUser, handleError);
     };
 
     function handleError (err) {
       alert('warning', 'Something went wrong :( ', err.message);
+    }
+
+    function greetUser (res) {
+      alert('success', 'Welcome', 'Thanks for coming back ' + (res.user.email || res.user.displayName) + '!');
     }
   });
