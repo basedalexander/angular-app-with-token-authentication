@@ -8,38 +8,27 @@
  */
 
 angular.module('authicationAngularApp')
-  .directive('validateEquals', function () {
+    .directive('passwordConfirm', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            scope: {
+                matchTarget: '=',
+            },
+            require: 'ngModel',
+            link: function link(scope, elem, attrs, ctrl) {
+                var validator = function(value) {
+                    ctrl.$setValidity('match', value === scope.matchTarget);
+                    return value;
+                }
 
-    var linker = function (scope, element, attrs, ngModelCtrl) {
+                ctrl.$parsers.unshift(validator);
+                ctrl.$formatters.push(validator);
 
-      // console.log(scope);
-      function validateEqual (value) {
-       var valid = (value === scope.$eval(attrs.validateEquals));
+                // This is to force validator when the original password gets changed
+                scope.$watch('matchTarget', function(newval, oldval) {
+                    validator(ctrl.$viewValue);
+                });
 
-       ngModelCtrl.$setValidity('equal', valid );
-
-       return valid ? value : undefined;
-      }
-
-      // Course stopped at video n14, 4:41
-
-      // Adding new parser and filter
-      // https://docs.angularjs.org/api/ng/type/ngModel.NgModelController
-      ngModelCtrl.$parsers.push(validateEqual);
-      ngModelCtrl.$formatters.push(validateEqual);
-
-      // Listening to event on form element
-      // https://docs.angularjs.org/api/ng/type/$rootScope.Scope
-      scope.$watch(attrs.validateEquals, function () {
-        // console.log(attrs.validateEquals);
-        // console.log(ngModelCtrl);
-        ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-      });
-    };
-
-    return {
-      require: 'ngModel',
-      link: linker
-    };
-  });
-
+            }
+        };
+    }]);

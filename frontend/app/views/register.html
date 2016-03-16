@@ -38,7 +38,7 @@
       <input
         name='password_confirm'
         ng-model='password_confirm'
-        validate-equals='password'
+        password-confirm match-target="password"
         type="password"
         class='form-control'
         placeholder="Confirm password"/>
@@ -59,16 +59,21 @@
   </div>
 
   <div>
-    <h4>email</h4>
-    <p>{{register.email}}</p>
-
     <h4>password</h4>
-    <p>{{register.password}}</p>
+    <pre>
+    $error = {{register.password.$error}}
+    $dirty = {{register.password.$dirty | json}}
+    $valid = {{register.password.$valid | json}}
+    </pre>
 
     <h4>password_confirm</h4>
-    <p>{{register.password_confirm}}</p>
+    <pre>
+    $error = {{register.password_confirm.$error}}
+    $dirty = {{register.password_confirm.$dirty | json}}
+    $valid = {{register.password_confirm.$valid | json}}
+    </pre>
 
     <h3>FORM</h3>
-    <p>{{register}}</p>
+    <pre>{{register.$error | json}}</pre>
   </div>
 </form>
