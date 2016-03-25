@@ -1,0 +1,4 @@
+module.exports = {
+  FACEBOOK_SECRET: 'fc8c5aa3ba212ce4079766075e0355f3',
+  GOOGLE_SECRET:  'NHNQGIsKH0ir7mDqi-vUD7gQ'
+};

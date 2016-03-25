@@ -8,7 +8,7 @@ var stratergyOptions = {
   usernameField: 'email'
 };
 
-var loginStrategy = new LocalStrategy(stratergyOptions, function (email, password, done) {
+ exports.login = new LocalStrategy(stratergyOptions, function (email, password, done) {
   var searchUser = { email: email};
   User.findOne(searchUser, function (err, user) {
     if (err) {
@@ -37,7 +37,7 @@ var loginStrategy = new LocalStrategy(stratergyOptions, function (email, passwor
   });
 });
 
-var registerStrategy = new LocalStrategy(stratergyOptions, function (email, password, done) {
+ exports.register = new LocalStrategy(stratergyOptions, function (email, password, done) {
 
   var searchUser = { email: email};
 
@@ -64,8 +64,3 @@ var registerStrategy = new LocalStrategy(stratergyOptions, function (email, pass
   });
 });
 
-
-module.exports = {
-  loginStrategy: loginStrategy,
-  registerStrategy: registerStrategy
-};

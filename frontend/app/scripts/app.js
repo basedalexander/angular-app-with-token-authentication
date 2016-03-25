@@ -45,6 +45,11 @@ angular
       url: API_URL + 'auth/google'
     });
 
+    $authProvider.facebook({
+      clientId: '1519072681732695',
+      url: API_URL + 'auth/facebook'
+    });
+
     $httpProvider.interceptors.push('authInterceptor');
   })
 
