@@ -3,8 +3,8 @@
 // TODO Stopped on video n25
 
 angular
-  .module('authicationAngularApp', ['ui.router', 'ngAnimate'])
-  .config(function ($urlRouterProvider, $stateProvider, $httpProvider) {
+  .module('authicationAngularApp', ['ui.router', 'ngAnimate', 'satellizer'])
+  .config(function ($urlRouterProvider, $stateProvider, $httpProvider, $authProvider, API_URL) {
     $urlRouterProvider.otherwise('/');
 
     $stateProvider
@@ -35,6 +35,15 @@ angular
         url: '/logout',
         controller: 'LogoutCtrl'
       });
+
+
+    $authProvider.loginUrl = API_URL + 'login';
+    $authProvider.signupUrl = API_URL + 'register';
+
+    $authProvider.google({
+      clientId: '882254101942-oo2cirj4ju5ogtjlhnqd8nc8at8nruar.apps.googleusercontent.com',
+      url: API_URL + 'auth/google'
+    });
 
     $httpProvider.interceptors.push('authInterceptor');
   })

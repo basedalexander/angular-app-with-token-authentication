@@ -7,6 +7,7 @@ var jwt = require('jwt-simple'); // ('./services/jwt.js');
 var passport = require('passport');
 var strategies = require('./strategies/strategies.js');
 var request = require('request');
+var moment = require('moment');
 
 var app = express();
 
@@ -21,7 +22,8 @@ passport.serializeUser(function (user, done) {
 
 function createSendToken (user, res) {
   var payload = {
-    sub: user.id
+    sub: user.id,
+    exp: moment().add(10, 'days').unix()
   };
 
   var token = jwt.encode(payload, 'shhh...');

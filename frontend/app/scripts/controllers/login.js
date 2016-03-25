@@ -1,16 +1,19 @@
 'use strict';
 
 angular.module('authicationAngularApp')
-  .controller('LoginCtrl', function ($scope, alert, auth) {
+  .controller('LoginCtrl', function ($scope, alert, auth, $auth) {
     $scope.submit = function () {
 
-      auth.login($scope.email, $scope.password)
-        .success(greetUser)
-        .error(handleError);
+      $auth.login({
+        email: $scope.email,
+        password: $scope.password
+      })
+        .then(greetUser)
+        .catch(handleError);
     };
 
-    $scope.google = function () {
-      auth.googleAuth().then(greetUser, handleError);
+    $scope.authenticate = function (provider) {
+      $auth.authenticate(provider).then(greetUser, handleError);
     };
 
     $scope.vk = function () {
@@ -22,6 +25,6 @@ angular.module('authicationAngularApp')
     }
 
     function greetUser (res) {
-      alert('success', 'Welcome', 'Thanks for coming back ' + (res.user.email || res.user.displayName) + '!');
+      alert('success', 'Welcome', 'Thanks for coming back ' + (res.data.user.email || res.data.user.displayName) + '!');
     }
   });
