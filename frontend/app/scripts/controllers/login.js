@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('authicationAngularApp')
-  .controller('LoginCtrl', function ($scope, alert, auth, $auth) {
+  .controller('LoginCtrl', function ($scope, alert, auth, $auth, $state) {
     $scope.submit = function () {
 
       $auth.login({
@@ -26,5 +26,6 @@ angular.module('authicationAngularApp')
 
     function greetUser (res) {
       alert('success', 'Welcome', 'Thanks for coming back ' + (res.data.user.email || res.data.user.displayName) + '!');
+      $state.go('main');
     }
   });
