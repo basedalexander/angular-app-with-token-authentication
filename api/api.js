@@ -33,6 +33,8 @@ app.post('/register', passport.authenticate('local-register'), function (req, re
   createSendToken(req.user, res);
 });
 
+app.get('/auth/verifyEmail', emailVerification.handler);
+
 app.post('/login', passport.authenticate('local-login'), function (req, res) {
     createSendToken(req.user, res);
 });

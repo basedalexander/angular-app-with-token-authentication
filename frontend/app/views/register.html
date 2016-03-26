@@ -57,23 +57,4 @@
       <!-- <button class="btn btn-default">Register</button> -->
     </div>
   </div>
-
-  <div>
-    <h4>password</h4>
-    <pre>
-    $error = {{register.password.$error}}
-    $dirty = {{register.password.$dirty | json}}
-    $valid = {{register.password.$valid | json}}
-    </pre>
-
-    <h4>password_confirm</h4>
-    <pre>
-    $error = {{register.password_confirm.$error}}
-    $dirty = {{register.password_confirm.$dirty | json}}
-    $valid = {{register.password_confirm.$valid | json}}
-    </pre>
-
-    <h3>FORM</h3>
-    <pre>{{register.$error | json}}</pre>
-  </div>
 </form>

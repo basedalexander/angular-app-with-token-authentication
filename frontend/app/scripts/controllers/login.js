@@ -25,7 +25,13 @@ angular.module('authicationAngularApp')
     }
 
     function greetUser (res) {
-      alert('success', 'Welcome', 'Thanks for coming back ' + (res.data.user.email || res.data.user.displayName) + '!');
+      var message = 'Thanks for coming back ' + (res.data.user.email || res.data.user.displayName) + '!';
+
+      if (!res.data.user.active) {
+        message = 'Please activate your account soon';
+      }
+
+      alert('success', 'Welcome', message );
       $state.go('main');
     }
   });
