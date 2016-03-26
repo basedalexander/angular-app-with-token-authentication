@@ -10,6 +10,9 @@ var facebookAuth = require('./services/facebookAuth');
 var googleAuth = require('./services/googleAuth');
 var vkAuth = require('./services/vkAuth');
 var jobs = require('./services/jobs');
+var emailVerification  = require('./services/emailVerification.js');
+
+emailVerification.send('fake@fake.com');
 
 var app = express();
 
