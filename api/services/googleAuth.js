@@ -1,6 +1,7 @@
 var createSendToken = require('../services/jwt');
 var request = require('request');
 var User = require('../models/User');
+var config = ('./config');
 
 module.exports = function (req, res) {
 

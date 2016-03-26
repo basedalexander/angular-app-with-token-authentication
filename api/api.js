@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var headers = require('./middlewares/headers.js');
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple'); // ('./services/jwt.js');
+var createSendToken = require('./services/jwt.js');
 var passport = require('passport');
 var localStrategy = require('./services/localStrategy');
 var moment = require('moment');
@@ -12,7 +13,6 @@ var vkAuth = require('./services/vkAuth');
 var jobs = require('./services/jobs');
 var emailVerification  = require('./services/emailVerification.js');
 
-emailVerification.send('fake@fake.com');
 
 var app = express();
 
@@ -29,6 +29,7 @@ passport.use('local-register', localStrategy.register);
 passport.use('local-login', localStrategy.login);
 
 app.post('/register', passport.authenticate('local-register'), function (req, res) {
+  emailVerification.send(req.user.email);
   createSendToken(req.user, res);
 });
 

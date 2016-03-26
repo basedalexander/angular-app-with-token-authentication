@@ -21,6 +21,8 @@
   },
   "devDependencies": {
     "moment": "^2.12.0",
+    "nodemailer": "^2.3.0",
+    "nodemailer-smtp-transport": "^2.4.1",
     "querystring": "^0.2.0",
     "underscore": "^1.8.3"
   }
