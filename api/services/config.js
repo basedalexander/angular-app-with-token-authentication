@@ -6,5 +6,5 @@ module.exports = {
   JWT_SECRET: 'shhh...',
 
   APP_URL: 'http://localhost:9000',
-  SMTP_PASSWORD: 'your password'
+  SMTP_PASSWORD: 'your_password'
 };
